@@ -1,0 +1,8 @@
+SELECT DISTINCT 
+    pais.id::text AS value, 
+    pais.territorio AS label
+FROM public."territorios" pais
+JOIN public."ordenes" o ON pais.id = o.territorio
+JOIN public."detalle_de_ordenes" d ON o.id_ordenes = d.orden_id
+WHERE d.condicion = 1
+ORDER BY pais.territorio ASC;

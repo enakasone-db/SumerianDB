@@ -1,0 +1,1 @@
+SELECT id_condicion, condicion FROM public."condicion_op" status;

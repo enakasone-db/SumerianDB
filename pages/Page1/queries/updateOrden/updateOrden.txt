@@ -1,0 +1,10 @@
+UPDATE ordenes
+SET 
+		comprador = {{ Number(appsmith.store.orden_editable?.comprador_id) }},
+    laboratorio = {{ Number(appsmith.store.orden_editable?.laboratorio_id) }},
+    
+    consignee = {{ Number(Select2.selectedOptionValue) }},
+    territorio = {{ Number(select_territorio.selectedOptionValue) }},
+    programacion = to_date({{ '01/' + Input1.text }}, 'DD/MM/YYYY'),
+    comentarios = {{ Input2.text }}
+WHERE id_ordenes = {{ appsmith.store.orden_editable?.id_orden }};

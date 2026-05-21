@@ -1,0 +1,64 @@
+{
+  "accentColor": "{{appsmith.theme.colors.primaryColor}}",
+  "animateLoading": true,
+  "autoFocus": false,
+  "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
+  "bottomRow": 5,
+  "boxShadow": "none",
+  "defaultText": "{{ \n  (() => {\n    const f = appsmith.store.orden_editable?.solicitado;\n    if (!f) return \"\";\n    \n    const d = new Date(f);\n    // Usamos getUTCMonth en lugar de getMonth para evitar el desfase de horas\n    const mes = String(d.getUTCMonth() + 1).padStart(2, '0');\n    \n    return `${mes}/${d.getUTCFullYear()}`;\n  })()\n}}",
+  "dynamicBindingPathList": [
+    {
+      "key": "accentColor"
+    },
+    {
+      "key": "borderRadius"
+    },
+    {
+      "key": "defaultText"
+    }
+  ],
+  "dynamicHeight": "FIXED",
+  "dynamicPropertyPathList": [
+    {
+      "key": "labelTextSize"
+    }
+  ],
+  "dynamicTriggerPathList": [],
+  "errorMessage": "El formato debe ser MM/YYYY (Ej: 05/2026)",
+  "iconAlign": "left",
+  "inputType": "TEXT",
+  "isDisabled": false,
+  "isLoading": false,
+  "isRequired": false,
+  "isVisible": true,
+  "key": "084qyywrgd",
+  "label": "PROGRAMACIÓN",
+  "labelAlignment": "left",
+  "labelPosition": "Left",
+  "labelStyle": "",
+  "labelTextSize": "0.75rem",
+  "labelWidth": "8",
+  "leftColumn": 42,
+  "maxDynamicHeight": 9000,
+  "minDynamicHeight": 4,
+  "minWidth": 450,
+  "mobileBottomRow": 5,
+  "mobileLeftColumn": 32,
+  "mobileRightColumn": 52,
+  "mobileTopRow": 0,
+  "needsErrorInfo": false,
+  "parentColumnSpace": 13.513281249999999,
+  "parentId": "gykj3h6tf0",
+  "parentRowSpace": 10,
+  "regex": "^(0[1-9]|1[0-2])\\/[0-9]{4}$",
+  "renderMode": "CANVAS",
+  "resetOnSubmit": true,
+  "responsiveBehavior": "fill",
+  "rightColumn": 57,
+  "showStepArrows": false,
+  "topRow": 1,
+  "type": "INPUT_WIDGET_V2",
+  "version": 2,
+  "widgetId": "ommfshqwlm",
+  "widgetName": "Input1"
+}

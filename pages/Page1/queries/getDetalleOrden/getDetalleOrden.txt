@@ -1,0 +1,69 @@
+SELECT 
+    o.id_ordenes as id_orden,          
+    o.orden as numero_orden,   
+    o.programacion as solicitado,
+    o.link_oc as link,
+    o.fecha as fecha_orden,           
+    o.comentarios as comentarios_orden, 
+      
+    o.comprador as comprador_id,
+    o.consignee as consignee_id,
+    o.laboratorio as laboratorio_id,
+    o.territorio as territorio_id,
+    
+    -- Nombres en texto para mostrar en etiquetas si fuera necesario
+    comp.comprador as cliente,
+    cnee.comprador as consignee_nombre, 
+    pais.territorio as destino,
+    lab.laboratorio as laboratorio_nombre, 
+    
+    -- Agrupamos los ítems de la orden en un JSON
+    coalesce(
+        json_agg(
+            json_build_object(
+                'id_item', d.orden_id, 
+                'orden_texto', o.orden,
+                'status', cond.condicion,
+                'producto', p.producto,
+                'cantidad', d.cantidad, 
+                'pu', d.pu_fob,
+                'total', d.total_fob,
+                'facturastl', facstl.factura_stl,
+                'facturalab', faclab.factura_lab                
+            )
+        ) FILTER (WHERE d.orden_id IS NOT NULL), '[]'
+    ) as items
+FROM ordenes o
+-- 1. Primero unimos la tabla de detalles
+LEFT JOIN detalle_de_ordenes d ON o.id_ordenes = d.orden_id 
+
+-- 2. Joins que dependen de la ORDEN (o)
+JOIN public."compradores" comp ON o.comprador = comp.id_comprador
+JOIN public."compradores" cnee ON o.consignee = cnee.id_comprador
+JOIN public."territorios" pais ON o.territorio = pais.id
+JOIN public."laboratorios" lab ON o.laboratorio = lab.id_lab
+
+-- 3. Joins que dependen del DETALLE (d)
+LEFT JOIN public."condicion_op" cond ON d.condicion = cond.id_condicion
+LEFT JOIN public."productos" p ON d.producto = p.id_producto
+LEFT JOIN public."facturas_lab" faclab ON d.factura_lab = faclab.id_factura_lab
+LEFT JOIN public."embarques" facstl ON d.factura_stl = facstl.id_embarques
+
+WHERE o.id_ordenes = {{ ordenes_pendientes.triggeredRow.id_respaldo }} 
+
+GROUP BY 
+    o.id_ordenes, 
+    o.orden,
+    o.programacion,
+    o.link_oc,
+    o.fecha,
+    o.comentarios,
+    -- 🟢 NUEVO: También es obligatorio agregarlos aquí al GROUP BY
+    o.comprador,
+    o.consignee,
+    o.laboratorio,
+    o.territorio,
+    comp.comprador, 
+    cnee.comprador, 
+    pais.territorio, 
+    lab.laboratorio;

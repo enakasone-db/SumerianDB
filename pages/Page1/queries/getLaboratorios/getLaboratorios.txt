@@ -1,0 +1,1 @@
+SELECT id_lab, laboratorio FROM public."laboratorios";

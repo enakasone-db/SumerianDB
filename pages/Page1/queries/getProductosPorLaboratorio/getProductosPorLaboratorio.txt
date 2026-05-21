@@ -1,0 +1,7 @@
+SELECT 
+    p.id_producto, 
+    p.producto 
+FROM public."productos" p
+JOIN public."laboratorios" l ON p.laboratorio = l.id_lab
+WHERE l.laboratorio = {{ appsmith.store.orden_editable?.laboratorio_nombre || "" }}
+ORDER BY p.producto ASC;

@@ -1,0 +1,8 @@
+SELECT DISTINCT 
+    comp.id_comprador::text AS value, 
+    comp.comprador AS label
+FROM public."compradores" comp
+JOIN public."ordenes" o ON comp.id_comprador = o.comprador
+JOIN public."detalle_de_ordenes" d ON o.id_ordenes = d.orden_id
+WHERE d.condicion = 1
+ORDER BY comp.comprador ASC;

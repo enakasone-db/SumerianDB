@@ -1,0 +1,7 @@
+SELECT DISTINCT 
+    p.id_producto::text AS value, 
+    p.producto AS label
+FROM public."productos" p
+JOIN public."detalle_de_ordenes" d ON p.id_producto = d.producto
+WHERE d.condicion = 1
+ORDER BY p.producto ASC;

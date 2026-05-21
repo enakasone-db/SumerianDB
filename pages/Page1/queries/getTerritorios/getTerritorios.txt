@@ -1,0 +1,1 @@
+SELECT id, territorio FROM public."territorios";
