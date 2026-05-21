@@ -21,7 +21,8 @@ SELECT
     coalesce(
         json_agg(
             json_build_object(
-                'id_item', d.orden_id, 
+                'id_detalle_op', d.id_detalle_op,    
+                'orden_id', d.orden_id,               
                 'orden_texto', o.orden,
                 'status', cond.condicion,
                 'producto', p.producto,

@@ -33,7 +33,6 @@
     }
   },
   "columnOrder": [
-    "id_item",
     "orden_texto",
     "status",
     "producto",
@@ -42,9 +41,11 @@
     "total",
     "facturastl",
     "facturalab",
+    "id_detalle_op",
+    "orden_id",
     "EditActions1"
   ],
-  "columnUpdatedAt": 1779376430858,
+  "columnUpdatedAt": 1779383178406,
   "columnWidthMap": {},
   "customIsLoading": false,
   "customIsLoadingValue": "",
@@ -83,9 +84,6 @@
       "key": "tableData"
     },
     {
-      "key": "primaryColumns.id_item.computedValue"
-    },
-    {
       "key": "primaryColumns.orden_texto.computedValue"
     },
     {
@@ -111,6 +109,12 @@
     },
     {
       "key": "primaryColumns.producto.selectOptions"
+    },
+    {
+      "key": "primaryColumns.id_detalle_op.computedValue"
+    },
+    {
+      "key": "primaryColumns.orden_id.computedValue"
     }
   ],
   "dynamicPropertyPathList": [
@@ -188,7 +192,7 @@
       "isVisible": true,
       "label": "Save / Discard",
       "notation": "standard",
-      "onSave": "{{ storeValue('items_editables', (appsmith.store.items_editables || []).map((item, index) => index === items_table_modal.updatedRowIndices[0] ? { ...item, ...items_table_modal.updatedRows[index].allFields } : item)).then(() => resetWidget(\"table_items_modal\", true)) }}",
+      "onSave": "{{ storeValue('items_editables', (appsmith.store.items_editables || []).map((item, index) => index === items_table_modal.updatedRowIndices[0] ? { ...item, ...items_table_modal.updatedRows[index].allFields } : item)).then(() => resetWidget(\"items_table_modal\", true)) }}",
       "originalId": "EditActions1",
       "saveActionLabel": "Save",
       "saveBorderRadius": "{{items_table_modal.processedTableData.map((currentRow, currentIndex) => ( (appsmith.theme.borderRadius.appBorderRadius)))}}",
@@ -301,21 +305,21 @@
       "verticalAlignment": "CENTER",
       "width": 150
     },
-    "id_item": {
-      "alias": "id_item",
+    "id_detalle_op": {
+      "alias": "id_detalle_op",
       "allowCellWrapping": false,
       "allowSameOptionsInNewRow": true,
       "cellBackground": "",
       "columnType": "number",
-      "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"id_item\"])) : id_item })()}}",
+      "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"id_detalle_op\"])) : id_detalle_op })()}}",
       "currencyCode": "USD",
       "decimals": 0,
       "enableFilter": true,
       "enableSort": true,
       "fontStyle": "",
       "horizontalAlignment": "LEFT",
-      "id": "id_item",
-      "index": 0,
+      "id": "id_detalle_op",
+      "index": 8,
       "isCellEditable": false,
       "isCellVisible": true,
       "isDerived": false,
@@ -324,9 +328,43 @@
       "isEditable": false,
       "isSaveVisible": true,
       "isVisible": true,
-      "label": "id_item",
+      "label": "id_detalle_op",
       "notation": "standard",
-      "originalId": "id_item",
+      "originalId": "id_detalle_op",
+      "sticky": "",
+      "textColor": "",
+      "textSize": "0.875rem",
+      "thousandSeparator": true,
+      "validation": {},
+      "verticalAlignment": "CENTER",
+      "width": 150
+    },
+    "orden_id": {
+      "alias": "orden_id",
+      "allowCellWrapping": false,
+      "allowSameOptionsInNewRow": true,
+      "cellBackground": "",
+      "columnType": "number",
+      "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"orden_id\"])) : orden_id })()}}",
+      "currencyCode": "USD",
+      "decimals": 0,
+      "enableFilter": true,
+      "enableSort": true,
+      "fontStyle": "",
+      "horizontalAlignment": "LEFT",
+      "id": "orden_id",
+      "index": 9,
+      "isCellEditable": false,
+      "isCellVisible": true,
+      "isDerived": false,
+      "isDisabled": false,
+      "isDiscardVisible": true,
+      "isEditable": false,
+      "isSaveVisible": true,
+      "isVisible": true,
+      "label": "orden_id",
+      "notation": "standard",
+      "originalId": "orden_id",
       "sticky": "",
       "textColor": "",
       "textSize": "0.875rem",
