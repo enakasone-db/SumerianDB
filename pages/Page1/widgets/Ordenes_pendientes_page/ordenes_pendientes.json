@@ -146,6 +146,9 @@
     },
     {
       "key": "animateLoading"
+    },
+    {
+      "key": "tableData"
     }
   ],
   "dynamicTriggerPathList": [
@@ -542,7 +545,7 @@
   "rightColumn": 63,
   "searchKey": "",
   "serverSidePaginationEnabled": true,
-  "tableData": "{{obtener_listado_ordenes.data}}",
+  "tableData": "{{obtener_listado_ordenes.data|| []}}",
   "textSize": "0.8rem",
   "topRow": 6,
   "totalRecordsCount": "{{count_listado_ordenes.data[0].total}}",
