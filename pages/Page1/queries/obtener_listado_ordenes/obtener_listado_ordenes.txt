@@ -7,7 +7,7 @@ SELECT
 	  o.programacion,
 		cond.condicion,
     p.producto,
-    d.cantidad, 
+    d.cantidad::int as cantidad, 
     d.pu_fob,
 		d.total_fob
 		

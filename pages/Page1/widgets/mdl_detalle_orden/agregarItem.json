@@ -12,11 +12,17 @@
     },
     {
       "key": "borderRadius"
+    },
+    {
+      "key": "isDisabled"
     }
   ],
   "dynamicPropertyPathList": [
     {
       "key": "onClick"
+    },
+    {
+      "key": "isDisabled"
     }
   ],
   "dynamicTriggerPathList": [
@@ -25,7 +31,7 @@
     }
   ],
   "isDefaultClickDisabled": true,
-  "isDisabled": false,
+  "isDisabled": "{{ items_table_modal.updatedRowIndices && items_table_modal.updatedRowIndices.length > 0 }}",
   "isLoading": false,
   "isVisible": true,
   "key": "ky3a4cqk14",
@@ -36,7 +42,7 @@
   "mobileRightColumn": 9,
   "mobileTopRow": 50,
   "needsErrorInfo": false,
-  "onClick": "{{\n  storeValue(\n    'items_editables', \n    [\n      ...(appsmith.store.items_editables || []), \n      {\n        id_detalle_op: undefined, // Crucial para que el botón de borrar sepa que es nueva\n        orden_id: Number(appsmith.store.orden_editable?.id_orden),\n        producto: \"\",\n        cantidad: 0,\n        pu: 0,\n        total: 0,\n        status: 1,\n        facturalab: null,\n        facturastl: null\n      }\n    ]\n  )\n}}",
+  "onClick": "{{\n  (function() {\n    const items = appsmith.store.items_editables || [];\n    const nuevoItem = {\n      id_temporal: Date.now(),   // ← identificador único por milisegundo\n      id_detalle_op: undefined,\n      orden_id: appsmith.store.orden_editable?.id_orden,\n      producto: \"\",\n      cantidad: 0,\n      pu: 0,\n      total: 0,\n      status: 1,\n      facturalab: null,\n      facturastl: null\n    };\n    storeValue('items_editables', [...items, nuevoItem]);\n  })()\n}}",
   "originalBottomRow": 53,
   "originalTopRow": 49,
   "parentColumnSpace": 13.513281249999999,
