@@ -1,6 +1,6 @@
 {
   "accentColor": "{{appsmith.theme.colors.primaryColor}}",
-  "allowAddNewRow": true,
+  "allowAddNewRow": false,
   "animateLoading": true,
   "borderColor": "#E0DEDE",
   "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
@@ -33,7 +33,6 @@
     }
   },
   "columnOrder": [
-    "orden_texto",
     "status",
     "producto",
     "cantidad",
@@ -43,10 +42,21 @@
     "facturalab",
     "id_detalle_op",
     "orden_id",
+    "customColumn1",
+    "orden_texto",
     "EditActions1"
   ],
-  "columnUpdatedAt": 1779383178406,
-  "columnWidthMap": {},
+  "columnUpdatedAt": 1779453155442,
+  "columnWidthMap": {
+    "cantidad": 98,
+    "customColumn1": 65.99999999999999,
+    "facturalab": 177,
+    "facturastl": 127,
+    "producto": 431,
+    "pu": 97,
+    "status": 72,
+    "total": 122
+  },
   "customIsLoading": false,
   "customIsLoadingValue": "",
   "defaultPageSize": 0,
@@ -115,6 +125,27 @@
     },
     {
       "key": "primaryColumns.orden_id.computedValue"
+    },
+    {
+      "key": "primaryColumns.facturastl.selectOptions"
+    },
+    {
+      "key": "primaryColumns.facturalab.selectOptions"
+    },
+    {
+      "key": "primaryColumns.customColumn1.buttonColor"
+    },
+    {
+      "key": "primaryColumns.customColumn1.borderRadius"
+    },
+    {
+      "key": "primaryColumns.customColumn1.boxShadow"
+    },
+    {
+      "key": "primaryColumns.customColumn1.isCellVisible"
+    },
+    {
+      "key": "primaryColumns.status.selectOptions"
     }
   ],
   "dynamicPropertyPathList": [
@@ -128,12 +159,42 @@
       "key": "primaryColumns.EditActions1.isDiscardDisabled"
     },
     {
+      "key": "textSize"
+    },
+    {
+      "key": "primaryColumns.status.textSize"
+    },
+    {
+      "key": "primaryColumns.cantidad.textSize"
+    },
+    {
+      "key": "primaryColumns.pu.textSize"
+    },
+    {
+      "key": "primaryColumns.total.textSize"
+    },
+    {
+      "key": "primaryColumns.customColumn1.isCellVisible"
+    },
+    {
+      "key": "primaryColumns.customColumn1.onClick"
+    },
+    {
       "key": "primaryColumns.EditActions1.onSave"
+    },
+    {
+      "key": "primaryColumns.cantidad.onSubmit"
     }
   ],
   "dynamicTriggerPathList": [
     {
       "key": "primaryColumns.EditActions1.onSave"
+    },
+    {
+      "key": "primaryColumns.customColumn1.onClick"
+    },
+    {
+      "key": "primaryColumns.cantidad.onSubmit"
     }
   ],
   "enableClientSideSearch": true,
@@ -157,10 +218,12 @@
   "mobileRightColumn": 13.999999999999998,
   "mobileTopRow": 24,
   "needsErrorInfo": false,
+  "originalBottomRow": 48,
+  "originalTopRow": 22,
   "parentColumnSpace": 13.513281249999999,
   "parentId": "gykj3h6tf0",
   "parentRowSpace": 10,
-  "primaryColumnId": "id_item",
+  "primaryColumnId": "id_detalle_op",
   "primaryColumns": {
     "EditActions1": {
       "alias": "EditActions1",
@@ -192,13 +255,14 @@
       "isVisible": true,
       "label": "Save / Discard",
       "notation": "standard",
-      "onSave": "{{ storeValue('items_editables', (appsmith.store.items_editables || []).map((item, index) => index === items_table_modal.updatedRowIndices[0] ? { ...item, ...items_table_modal.updatedRows[index].allFields } : item)).then(() => resetWidget(\"items_table_modal\", true)) }}",
+      "onSave": "{{\n  (function() {\n    const oldItems = appsmith.store.items_editables || [];\n    const newItems = [...oldItems];\n    let updatedRowData = items_table_modal.updatedRow;\n    \n    // Limpiar formato de miles en cantidad (si es string con puntos)\n    if (updatedRowData.cantidad && typeof updatedRowData.cantidad === 'string') {\n      // Eliminar todos los puntos y convertir a entero\n      updatedRowData.cantidad = parseInt(updatedRowData.cantidad.replace(/\\./g, ''), 10);\n    }\n    \n    // Buscar índice por id_detalle_op\n    const rowIndex = newItems.findIndex(item => item.id_detalle_op === updatedRowData.id_detalle_op);\n    if (rowIndex !== -1) {\n      newItems[rowIndex] = updatedRowData;\n      storeValue('items_editables', newItems);\n      showAlert('Cambios guardados correctamente', 'success');\n    }\n  })()\n}}",
       "originalId": "EditActions1",
       "saveActionLabel": "Save",
       "saveBorderRadius": "{{items_table_modal.processedTableData.map((currentRow, currentIndex) => ( (appsmith.theme.borderRadius.appBorderRadius)))}}",
       "saveButtonColor": "{{items_table_modal.processedTableData.map((currentRow, currentIndex) => ( (appsmith.theme.colors.primaryColor)))}}",
       "saveIconAlign": "left",
       "sticky": "right",
+      "textSize": "0.800\trem",
       "thousandSeparator": true,
       "validation": {},
       "width": 150
@@ -208,14 +272,14 @@
       "allowCellWrapping": false,
       "allowSameOptionsInNewRow": true,
       "cellBackground": "",
-      "columnType": "number",
-      "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => ( \n  new Intl.NumberFormat('es-AR', { \n    maximumFractionDigits: 0 \n  }).format(currentRow[\"cantidad\"]) \n)) :  \n  new Intl.NumberFormat('es-AR', { \n    maximumFractionDigits: 0 \n  }).format(currentRow[\"cantidad\"]) \n })()}}",
+      "columnType": "text",
+      "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (   Number(currentRow.cantidad).toLocaleString('es-AR', { \n    minimumFractionDigits: 0, \n    maximumFractionDigits: 0 \n  }) \n)) :    Number(currentRow.cantidad).toLocaleString('es-AR', { \n    minimumFractionDigits: 0, \n    maximumFractionDigits: 0 \n  }) \n })()}}",
       "currencyCode": "USD",
       "decimals": 0,
       "enableFilter": true,
       "enableSort": true,
       "fontStyle": "",
-      "horizontalAlignment": "RIGHT",
+      "horizontalAlignment": "LEFT",
       "id": "cantidad",
       "index": 4,
       "isCellEditable": true,
@@ -228,10 +292,50 @@
       "isVisible": true,
       "label": "Cantidad",
       "notation": "standard",
+      "onSubmit": "{{null}}",
       "originalId": "cantidad",
       "sticky": "",
       "textColor": "",
-      "textSize": "0.875rem",
+      "textSize": "0.800\trem",
+      "thousandSeparator": true,
+      "validation": {},
+      "verticalAlignment": "CENTER",
+      "width": 150
+    },
+    "customColumn1": {
+      "alias": "Eliminar",
+      "allowCellWrapping": false,
+      "allowSameOptionsInNewRow": true,
+      "borderRadius": "{{items_table_modal.processedTableData.map((currentRow, currentIndex) => ( (appsmith.theme.borderRadius.appBorderRadius)))}}",
+      "boxShadow": "{{items_table_modal.processedTableData.map((currentRow, currentIndex) => ( \"none\"))}}",
+      "buttonColor": "{{items_table_modal.processedTableData.map((currentRow, currentIndex) => ( (appsmith.theme.colors.primaryColor)))}}",
+      "buttonStyle": "rgb(3, 179, 101)",
+      "columnType": "iconButton",
+      "computedValue": "",
+      "currencyCode": "USD",
+      "customAlias": "",
+      "decimals": 0,
+      "enableFilter": true,
+      "enableSort": true,
+      "horizontalAlignment": "LEFT",
+      "iconName": "delete",
+      "id": "customColumn1",
+      "index": 10,
+      "isCellEditable": false,
+      "isCellVisible": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => ( currentRow.id_detalle_op === undefined )) :  currentRow.id_detalle_op === undefined  })()}}",
+      "isDerived": true,
+      "isDisabled": false,
+      "isDiscardVisible": true,
+      "isEditable": false,
+      "isSaveVisible": true,
+      "isVisible": true,
+      "label": "Eliminar",
+      "labelColor": "#FFFFFF",
+      "notation": "standard",
+      "onClick": "{{\n  // Accedemos directamente a la fila usando el índice disparado sobre los datos actuales de la tabla\n  !items_table_modal.tableData[items_table_modal.triggeredRowIndex]?.id_detalle_op \n    ? \n      // CASO A: Es una fila nueva (no tiene id_detalle_op en la base de datos)\n      storeValue(\n        'items_editables', \n        (appsmith.store.items_editables || []).filter((item, index) => index !== items_table_modal.triggeredRowIndex)\n      ).then(() => {\n        // Forzamos el reseteo para limpiar estados visuales residuales\n        resetWidget(\"items_table_modal\", true);\n        showAlert('Fila provisional eliminada', 'info');\n      })\n    : \n      // CASO B: La fila ya existe en Supabase\n      showAlert('Esta fila ya está guardada en la base de datos y no se puede eliminar localmente.', 'warning')\n}}",
+      "originalId": "customColumn1",
+      "sticky": "",
+      "textSize": "0.800\trem",
       "thousandSeparator": true,
       "validation": {},
       "verticalAlignment": "CENTER",
@@ -242,7 +346,7 @@
       "allowCellWrapping": false,
       "allowSameOptionsInNewRow": true,
       "cellBackground": "",
-      "columnType": "text",
+      "columnType": "select",
       "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"facturalab\"])) : facturalab })()}}",
       "currencyCode": "USD",
       "decimals": 0,
@@ -263,9 +367,10 @@
       "label": "Factura LAB",
       "notation": "standard",
       "originalId": "facturalab",
+      "selectOptions": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => ( (getFacturasLAB.data && getFacturasLAB.data.length ? getFacturasLAB.data : [])\n    .filter(item => item && item.id && item.numero)\n    .map(item => ({ label: String(item.numero), value: Number(item.id) }))\n)) :  (getFacturasLAB.data && getFacturasLAB.data.length ? getFacturasLAB.data : [])\n    .filter(item => item && item.id && item.numero)\n    .map(item => ({ label: String(item.numero), value: Number(item.id) }))\n })()}}",
       "sticky": "",
       "textColor": "",
-      "textSize": "0.875rem",
+      "textSize": "0.800\trem",
       "thousandSeparator": true,
       "validation": {},
       "verticalAlignment": "CENTER",
@@ -276,7 +381,7 @@
       "allowCellWrapping": false,
       "allowSameOptionsInNewRow": true,
       "cellBackground": "",
-      "columnType": "text",
+      "columnType": "select",
       "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"facturastl\"])) : facturastl })()}}",
       "currencyCode": "USD",
       "decimals": 0,
@@ -297,9 +402,10 @@
       "label": "Factura STL",
       "notation": "standard",
       "originalId": "facturastl",
+      "selectOptions": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => ( (getFacturasSTL.data && getFacturasSTL.data.length ? getFacturasSTL.data : [])\n    .filter(item => item && item.id && item.numero)\n    .map(item => ({ label: String(item.numero), value: Number(item.id) }))\n)) :  (getFacturasSTL.data && getFacturasSTL.data.length ? getFacturasSTL.data : [])\n    .filter(item => item && item.id && item.numero)\n    .map(item => ({ label: String(item.numero), value: Number(item.id) }))\n })()}}",
       "sticky": "",
       "textColor": "",
-      "textSize": "0.875rem",
+      "textSize": "0.800\trem",
       "thousandSeparator": true,
       "validation": {},
       "verticalAlignment": "CENTER",
@@ -327,13 +433,13 @@
       "isDiscardVisible": true,
       "isEditable": false,
       "isSaveVisible": true,
-      "isVisible": true,
+      "isVisible": false,
       "label": "id_detalle_op",
       "notation": "standard",
       "originalId": "id_detalle_op",
       "sticky": "",
       "textColor": "",
-      "textSize": "0.875rem",
+      "textSize": "0.800\trem",
       "thousandSeparator": true,
       "validation": {},
       "verticalAlignment": "CENTER",
@@ -345,7 +451,7 @@
       "allowSameOptionsInNewRow": true,
       "cellBackground": "",
       "columnType": "number",
-      "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"orden_id\"])) : orden_id })()}}",
+      "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"orden_id\"])) : currentRow[\"orden_id\"] })()}}",
       "currencyCode": "USD",
       "decimals": 0,
       "enableFilter": true,
@@ -361,13 +467,13 @@
       "isDiscardVisible": true,
       "isEditable": false,
       "isSaveVisible": true,
-      "isVisible": true,
+      "isVisible": false,
       "label": "orden_id",
       "notation": "standard",
       "originalId": "orden_id",
       "sticky": "",
       "textColor": "",
-      "textSize": "0.875rem",
+      "textSize": "0.800\trem",
       "thousandSeparator": true,
       "validation": {},
       "verticalAlignment": "CENTER",
@@ -401,7 +507,7 @@
       "originalId": "orden_texto",
       "sticky": "",
       "textColor": "",
-      "textSize": "0.875rem",
+      "textSize": "0.800\trem",
       "thousandSeparator": true,
       "validation": {},
       "verticalAlignment": "CENTER",
@@ -436,7 +542,7 @@
       "selectOptions": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (    getProductosPorLaboratorio.data.map(p => ({\n    label: p.producto,\n    value: p.id_producto \n  })) \n)) :     getProductosPorLaboratorio.data.map(p => ({\n    label: p.producto,\n    value: p.id_producto \n  })) \n })()}}",
       "sticky": "",
       "textColor": "",
-      "textSize": "0.875rem",
+      "textSize": "0.800\trem",
       "thousandSeparator": true,
       "validation": {},
       "verticalAlignment": "CENTER",
@@ -448,13 +554,13 @@
       "allowSameOptionsInNewRow": true,
       "cellBackground": "",
       "columnType": "currency",
-      "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"pu\"])) : pu })()}}",
+      "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"pu\"])) : currentRow[\"pu\"] })()}}",
       "currencyCode": "USD",
       "decimals": 2,
       "enableFilter": true,
       "enableSort": true,
       "fontStyle": "",
-      "horizontalAlignment": "LEFT",
+      "horizontalAlignment": "RIGHT",
       "id": "pu",
       "index": 5,
       "isCellEditable": true,
@@ -470,7 +576,7 @@
       "originalId": "pu",
       "sticky": "",
       "textColor": "",
-      "textSize": "0.875rem",
+      "textSize": "0.800\trem",
       "thousandSeparator": true,
       "validation": {},
       "verticalAlignment": "CENTER",
@@ -481,7 +587,7 @@
       "allowCellWrapping": false,
       "allowSameOptionsInNewRow": true,
       "cellBackground": "",
-      "columnType": "text",
+      "columnType": "select",
       "computedValue": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (currentRow[\"status\"])) : status })()}}",
       "currencyCode": "USD",
       "decimals": 0,
@@ -502,9 +608,10 @@
       "label": "Status",
       "notation": "standard",
       "originalId": "status",
+      "selectOptions": "{{(() => { const tableData = items_table_modal.processedTableData || []; return tableData.length > 0 ? tableData.map((currentRow, currentIndex) => (\n  getStatus.data.map(estado => (\n    {\n      \"label\": estado.condicion,   // Lo que el usuario ve (ej: \"order\")\n      \"value\": estado.id_condicion // El ID numérico que se guarda en la base de datos (ej: 1)\n    }\n  ))\n)) : \n  getStatus.data.map(estado => (\n    {\n      \"label\": estado.condicion,   // Lo que el usuario ve (ej: \"order\")\n      \"value\": estado.id_condicion // El ID numérico que se guarda en la base de datos (ej: 1)\n    }\n  ))\n })()}}",
       "sticky": "",
       "textColor": "",
-      "textSize": "0.875rem",
+      "textSize": "0.8rem",
       "thousandSeparator": true,
       "validation": {},
       "verticalAlignment": "CENTER",
@@ -522,7 +629,7 @@
       "enableFilter": true,
       "enableSort": true,
       "fontStyle": "",
-      "horizontalAlignment": "LEFT",
+      "horizontalAlignment": "RIGHT",
       "id": "total",
       "index": 6,
       "isCellEditable": true,
@@ -538,7 +645,7 @@
       "originalId": "total",
       "sticky": "",
       "textColor": "",
-      "textSize": "0.875rem",
+      "textSize": "0.800\trem",
       "thousandSeparator": true,
       "validation": {},
       "verticalAlignment": "CENTER",
@@ -552,7 +659,7 @@
   "serverSidePaginationEnabled": false,
   "showInlineEditingOptionDropdown": true,
   "tableData": "{{ appsmith.store.items_editables || [] }}",
-  "textSize": "0.875rem",
+  "textSize": "0.800\trem",
   "topRow": 22,
   "totalRecordsCount": 0,
   "type": "TABLE_WIDGET_V2",

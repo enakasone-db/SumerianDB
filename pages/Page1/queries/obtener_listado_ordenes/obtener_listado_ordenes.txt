@@ -31,5 +31,5 @@ AND (
 )
 
 ORDER BY o.fecha DESC
-LIMIT {{ ordenes_pendientes.pageSize }}
-OFFSET {{ ordenes_pendientes.pageOffset }};
+LIMIT {{ ordenes_pendientes.pageSize || 10}}
+OFFSET {{ ordenes_pendientes.pageOffset || 0}};

@@ -43,7 +43,7 @@
   "responsiveBehavior": "fill",
   "rightColumn": 20,
   "shouldTruncate": false,
-  "text": "{{ appsmith.store.orden_editable.id_orden}}",
+  "text": "{{ appsmith.store.orden_editable?.id_orden}}",
   "textAlign": "LEFT",
   "textColor": "#212121",
   "topRow": 1,

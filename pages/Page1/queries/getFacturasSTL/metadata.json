@@ -1,11 +1,11 @@
 {
-  "gitSyncId": "6a072ce7fc5781eaab3138b3_73ab5b15-dc1a-49a6-a223-dac42a7c909a",
-  "id": "Page1_getStatus",
+  "gitSyncId": "6a0f4e4b59974b267dca077e_f12304a5-f447-4d43-b91e-ace0605c48e3",
+  "id": "Page1_getFacturasSTL",
   "pluginId": "postgres-plugin",
   "pluginType": "DB",
   "unpublishedAction": {
     "actionConfiguration": {
-      "body": "SELECT id_condicion, condicion FROM public.\"condicion_op\" status;",
+      "body": "SELECT id_embarques as id, factura_stl as numero\nFROM public.\"embarques\"\nORDER BY id_embarques DESC",
       "encodeParamsToggle": true,
       "paginationType": "NONE",
       "pluginSpecifiedTemplates": [
@@ -23,7 +23,7 @@
       "pluginId": "postgres-plugin"
     },
     "dynamicBindingPathList": [],
-    "name": "getStatus",
+    "name": "getFacturasSTL",
     "pageId": "Page1",
     "runBehaviour": "AUTOMATIC",
     "userSetOnLoad": false

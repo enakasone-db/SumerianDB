@@ -1,0 +1,32 @@
+INSERT INTO public."detalle_de_ordenes" 
+  (orden_id, producto, cantidad, pu_fob, total_fob, condicion, factura_lab, factura_stl)
+SELECT 
+  orden_id, producto, cantidad, pu_fob, total_fob, condicion, factura_lab, factura_stl
+FROM jsonb_to_recordset({{ 
+  JSON.stringify(
+    (appsmith.store.items_editables || [])
+      .filter(item => !item.id_detalle_op)  // solo filas nuevas
+      .map(item => {
+        const prod = getProductosPorLaboratorio.data?.find(p => p.producto === item.producto || p.id_producto === Number(item.producto));
+        return {
+          orden_id: Number(appsmith.store.orden_editable?.id_orden),
+          producto: prod ? Number(prod.id_producto) : Number(item.producto),
+          cantidad: Number(item.cantidad),
+          pu_fob: Number(item.pu_fob || item.pu),
+          total_fob: Number(item.total_fob || item.total),
+          condicion: Number(item.status) || 1,
+          factura_lab: item.facturalab || null,
+          factura_stl: item.facturastl || null
+        };
+      })
+  )
+}}::jsonb) AS x(
+  orden_id BIGINT,
+  producto INTEGER,
+  cantidad INTEGER,
+  pu_fob NUMERIC,
+  total_fob NUMERIC,
+  condicion INTEGER,
+  factura_lab INTEGER,
+  factura_stl INTEGER
+);

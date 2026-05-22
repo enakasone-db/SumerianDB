@@ -61,7 +61,16 @@
     }
   ],
   "dynamicHeight": "AUTO_HEIGHT",
-  "dynamicTriggerPathList": [],
+  "dynamicPropertyPathList": [
+    {
+      "key": "onClose"
+    }
+  ],
+  "dynamicTriggerPathList": [
+    {
+      "key": "onClose"
+    }
+  ],
   "height": 550,
   "isCanvas": true,
   "isLoading": false,
@@ -75,6 +84,7 @@
   "mobileRightColumn": 37,
   "mobileTopRow": 11,
   "needsErrorInfo": false,
+  "onClose": "{{\n  (function() {\n    // Limpiar stores (como ya hacías)\n    storeValue('orden_editable', undefined);\n    storeValue('items_editables', []);\n    \n    // Refrescar la tabla principal\n    obtener_listado_ordenes.run();\n  })()\n}}",
   "parentColumnSpace": 13.921875,
   "parentId": "0",
   "parentRowSpace": 10,

@@ -1,11 +1,11 @@
 {
-  "gitSyncId": "6a072ce7fc5781eaab3138b3_73ab5b15-dc1a-49a6-a223-dac42a7c909a",
-  "id": "Page1_getStatus",
+  "gitSyncId": "6a0f4e4b59974b267dca077e_515a6174-2332-4353-b95c-ecf67461ea2a",
+  "id": "Page1_getFacturasLAB",
   "pluginId": "postgres-plugin",
   "pluginType": "DB",
   "unpublishedAction": {
     "actionConfiguration": {
-      "body": "SELECT id_condicion, condicion FROM public.\"condicion_op\" status;",
+      "body": "SELECT id_factura_lab as id, factura_lab as numero\nFROM public.\"facturas_lab\"\nORDER BY id_factura_lab DESC",
       "encodeParamsToggle": true,
       "paginationType": "NONE",
       "pluginSpecifiedTemplates": [
@@ -23,7 +23,7 @@
       "pluginId": "postgres-plugin"
     },
     "dynamicBindingPathList": [],
-    "name": "getStatus",
+    "name": "getFacturasLAB",
     "pageId": "Page1",
     "runBehaviour": "AUTOMATIC",
     "userSetOnLoad": false

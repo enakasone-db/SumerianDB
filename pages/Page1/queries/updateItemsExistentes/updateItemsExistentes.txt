@@ -1,0 +1,41 @@
+UPDATE public."detalle_de_ordenes" AS d
+SET 
+  orden_id = x.orden_id,
+  producto = x.producto,
+  cantidad = x.cantidad,
+  pu_fob = x.pu_fob,
+  total_fob = x.total_fob,
+  condicion = x.condicion,
+  factura_lab = x.factura_lab,
+  factura_stl = x.factura_stl
+FROM jsonb_to_recordset({{ 
+  JSON.stringify(
+    (appsmith.store.items_editables || [])
+      .filter(item => item.id_detalle_op)  // solo filas existentes
+      .map(item => {
+        const prod = getProductosPorLaboratorio.data?.find(p => p.producto === item.producto || p.id_producto === Number(item.producto));
+        return {
+          id_detalle_op: Number(item.id_detalle_op),
+          orden_id: Number(appsmith.store.orden_editable?.id_orden),
+          producto: prod ? Number(prod.id_producto) : Number(item.producto),
+          cantidad: Number(item.cantidad),
+          pu_fob: Number(item.pu_fob || item.pu),
+          total_fob: Number(item.total_fob || item.total),
+          condicion: Number(item.status) || 1,
+          factura_lab: item.facturalab || null,
+          factura_stl: item.facturastl || null
+        };
+      })
+  )
+}}::jsonb) AS x(
+  id_detalle_op BIGINT,
+  orden_id BIGINT,
+  producto INTEGER,
+  cantidad INTEGER,
+  pu_fob NUMERIC,
+  total_fob NUMERIC,
+  condicion INTEGER,
+  factura_lab INTEGER,
+  factura_stl INTEGER
+)
+WHERE d.id_detalle_op = x.id_detalle_op;

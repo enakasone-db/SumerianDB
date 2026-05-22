@@ -1,19 +1,29 @@
 INSERT INTO public."detalle_de_ordenes" 
-SELECT * FROM json_populate_recordset(NULL::public."detalle_de_ordenes", 
-  {{ JSON.stringify((appsmith.store.items_editables || []).map(item => {
-    const prod = getProductosPorLaboratorio.data?.find(p => p.producto === item.producto || p.id_producto === Number(item.producto));
-    return {
-      id_detalle_op: item.id_detalle_op ? Number(item.id_detalle_op) : undefined,
-      orden_id: Number(appsmith.store.orden_editable.id_orden),  
-      producto: prod ? Number(prod.id_producto) : Number(item.producto),
-      cantidad: Number(item.cantidad),
-      pu_fob: Number(item.pu_fob || item.pu),
-      total_fob: Number(item.total_fob || item.total),
-      condicion: Number(item.status) || 1,        
-      factura_lab: item.facturalab || null,
-      factura_stl: item.facturastl || null
-    };
-  })) }}::json)
+SELECT * FROM json_populate_recordset(NULL::public."detalle_de_ordenes", {{ 
+  JSON.stringify(
+    (appsmith.store.items_editables || []).map(item => {
+      const prod = getProductosPorLaboratorio.data?.find(p => p.producto === item.producto || p.id_producto === Number(item.producto));
+      
+      const nuevoItem = {
+        orden_id: Number(appsmith.store.orden_editable?.id_orden),
+        producto: prod ? Number(prod.id_producto) : Number(item.producto),
+        cantidad: Number(item.cantidad),
+        pu_fob: Number(item.pu_fob || item.pu),
+        total_fob: Number(item.total_fob || item.total),
+        condicion: Number(item.status) || 1,
+        factura_lab: item.facturalab || null,
+        factura_stl: item.facturastl || null
+      };
+      
+      // Solo agregar id_detalle_op si existe (para UPDATE)
+      if (item.id_detalle_op) {
+        nuevoItem.id_detalle_op = Number(item.id_detalle_op);
+      }
+      
+      return nuevoItem;
+    })
+  )
+}}::json)
 ON CONFLICT (id_detalle_op) DO UPDATE SET
   orden_id = EXCLUDED.orden_id,
   producto = EXCLUDED.producto,

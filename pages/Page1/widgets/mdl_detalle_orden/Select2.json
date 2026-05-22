@@ -4,7 +4,7 @@
   "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
   "bottomRow": 22,
   "boxShadow": "none",
-  "defaultOptionValue": "{{ ((options, serverSideFiltering) => (  Number(appsmith.store.orden_editable?.consignee_id) ))(Select2.options, Select2.serverSideFiltering) }}",
+  "defaultOptionValue": "{{ ((options, serverSideFiltering) => (  Number(appsmith.store.orden_editable?.consignee_id) || \"\"))(Select2.options, Select2.serverSideFiltering) }}",
   "dynamicBindingPathList": [
     {
       "key": "accentColor"

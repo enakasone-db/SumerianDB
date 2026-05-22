@@ -1,0 +1,3 @@
+SELECT id_embarques as id, factura_stl as numero
+FROM public."embarques"
+ORDER BY id_embarques DESC
