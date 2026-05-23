@@ -29,7 +29,7 @@
     ],
     "name": "count_listado_ordenes",
     "pageId": "Page1",
-    "runBehaviour": "AUTOMATIC",
+    "runBehaviour": "MANUAL",
     "userSetOnLoad": false
   }
 }

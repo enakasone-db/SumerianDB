@@ -5,7 +5,7 @@
   "borderColor": "{{appsmith.theme.colors.primaryColor}}",
   "borderRadius": "{{appsmith.theme.borderRadius.appBorderRadius}}",
   "borderWidth": "1",
-  "bottomRow": 62,
+  "bottomRow": 63,
   "boxShadow": "{{appsmith.theme.boxShadow.appBoxShadow}}",
   "cachedTableData": {},
   "canFreezeColumn": true,
@@ -149,6 +149,12 @@
     },
     {
       "key": "tableData"
+    },
+    {
+      "key": "onPageChange"
+    },
+    {
+      "key": "onPageSizeChange"
     }
   ],
   "dynamicTriggerPathList": [
@@ -157,6 +163,9 @@
     },
     {
       "key": "onPageChange"
+    },
+    {
+      "key": "onPageSizeChange"
     }
   ],
   "enableClientSideSearch": false,
@@ -182,7 +191,8 @@
   "mobileRightColumn": 8,
   "mobileTopRow": 0,
   "needsErrorInfo": false,
-  "onPageChange": "{{obtener_listado_ordenes.run()}}",
+  "onPageChange": "{{ \n  Promise.all([\n    obtener_total_ordenes.run(),\n    obtener_listado_ordenes.run()\n  ])\n}}",
+  "onPageSizeChange": "{{ \n  Promise.all([\n    obtener_total_ordenes.run(),\n    obtener_listado_ordenes.run()\n  ])\n}}",
   "originalBottomRow": 105,
   "originalTopRow": 84,
   "parentColumnSpace": 13.921875,
@@ -547,8 +557,8 @@
   "serverSidePaginationEnabled": true,
   "tableData": "{{obtener_listado_ordenes.data|| []}}",
   "textSize": "0.8rem",
-  "topRow": 6,
-  "totalRecordsCount": "{{count_listado_ordenes.data[0].total}}",
+  "topRow": 4,
+  "totalRecordsCount": "{{ obtener_total_ordenes.data[0]?.total || 0 }}",
   "type": "TABLE_WIDGET_V2",
   "version": 2,
   "verticalAlignment": "CENTER",

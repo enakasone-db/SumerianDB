@@ -1,16 +1,4 @@
-SELECT 
-    o.id_ordenes AS id_orden,
-		o.id_ordenes AS id_respaldo,
-		o.orden,
-    comp.comprador AS comprador,
-		pais.territorio,
-	  o.programacion,
-		cond.condicion,
-    p.producto,
-    d.cantidad::int as cantidad, 
-    d.pu_fob,
-		d.total_fob
-		
+SELECT COUNT(*) as total
 FROM public."ordenes" o
 JOIN public."detalle_de_ordenes" d ON o.id_ordenes = d.orden_id
 JOIN public."compradores" comp ON o.comprador = comp.id_comprador
@@ -18,8 +6,6 @@ JOIN public."condicion_op" cond ON d.condicion = cond.id_condicion
 JOIN public."territorios" pais ON o.territorio = pais.id
 JOIN public."productos" p ON d.producto = p.id_producto
 WHERE d.condicion = {{ sl_estado.selectedOptionValue || 1 }}
-
--- 🔍 1. BLOQUE FILTRO GENERAL (Todo lo relacionado al texto va aquí dentro)
 AND (
     COALESCE({{ txt_buscar.text }}, '') = '' 
     OR (
@@ -28,8 +14,4 @@ AND (
         pais.territorio ILIKE {{ '%' + txt_buscar.text + '%' }} OR
         p.producto ILIKE {{ '%' + txt_buscar.text + '%' }}
     )
-)
-
-ORDER BY o.fecha DESC
-LIMIT {{ ordenes_pendientes.pageSize || 10}}
-OFFSET {{ ordenes_pendientes.pageOffset || 0}};
+);
