@@ -17,7 +17,7 @@ JOIN public."compradores" comp ON o.comprador = comp.id_comprador
 JOIN public."condicion_op" cond ON d.condicion = cond.id_condicion
 JOIN public."territorios" pais ON o.territorio = pais.id
 JOIN public."productos" p ON d.producto = p.id_producto
-WHERE d.condicion = 1
+WHERE d.condicion = {{ sl_estado.selectedOptionValue || 1 }}
 
 -- 🔍 1. BLOQUE FILTRO GENERAL (Todo lo relacionado al texto va aquí dentro)
 AND (
